@@ -8,19 +8,36 @@
 
    $mail = new PHPMailer(true);
    $mail->CharSet = "UTF-8";
+   $mail->isHTML(true);
 
    $name = $_POST["name"];
    $email = $_POST["email"];
    $phone = $_POST["phone"];
    $message = $_POST["message"];
 
-   $body = $name . ' ' . $email . ' ' . $phone . ' ' . $message;
+   $email_template = "template_mail.html";
+   
+   $body = file_get_contents($email_template);
+
+   $body = str_replace('%name%', $name, $body);
+   $body = str_replace('%email%', $email, $body);
+   $body = str_replace('%phone%', $phone, $body);
+   $body = str_replace('%message%', $message, $body);
+
    $theme = "[Заявка с формы]";
 
    $mail->addAddress("verclocker1@gmail.com");
 
    $mail->Subject = $theme;
-   $mail->Body = $body;
+   $mail->MsgHTML($body);
 
-   $mail->send();
+   if (!$mail->send()) {
+      $message = "Сообщение не отправлено";
+   } else {
+      $message = "Данные отправлены!";
+   }
+
+   $response = ["message" => $message];
+   header('Content-type: application/json');
+   echo json_encode($response);
    
