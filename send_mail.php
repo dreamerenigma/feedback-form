@@ -7,8 +7,9 @@
    require "PHPMailer/src/Exception.php";
 
    $mail = new PHPMailer(true);
+
    $mail->CharSet = "UTF-8";
-   $mail->isHTML(true);
+   $mail->IsHTML(true);
 
    $name = $_POST["name"];
    $email = $_POST["email"];
@@ -24,15 +25,14 @@
    $body = str_replace('%phone%', $phone, $body);
    $body = str_replace('%message%', $message, $body);
 
-   $theme = "[Заявка с формы]";
-
    $mail->addAddress("verclocker1@gmail.com");
+   $mail->setFrom($email);
 
-   $mail->Subject = $theme;
+   $mail->Subject = "[Заявка с формы]";
    $mail->MsgHTML($body);
 
    if (!$mail->send()) {
-      $message = "Сообщение не отправлено";
+      $message = "Ошибка отправки";
    } else {
       $message = "Данные отправлены!";
    }
