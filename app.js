@@ -1,6 +1,6 @@
 const form = document.forms["form"];
 const formArr = Array.from(form);
-const validInputArr = [];
+const validFormArr = [];
 const button = form.elements["button"];
 
 formArr.forEach((el) => {
@@ -11,7 +11,7 @@ formArr.forEach((el) => {
 });
 
 form.addEventListener("input", inputHandler);
-button.addEventListener("submit", formCheck);
+form.addEventListener("submit", formCheck);
 
 function inputHandler({ target }) {
    if (target.hasAttribute("data-reg")) {
